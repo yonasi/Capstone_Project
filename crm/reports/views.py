@@ -19,13 +19,14 @@ def contacts_by_category_report(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def recent_activities_report(request):
-    limit = request.query_params.get('limit', 10)  # Default to 10 recent activities
+    limit = request.query_params.get('limit', 8)  # Default to 8 recent activities
     try:
         limit = int(limit)
     except ValueError:
         return Response({'error': 'Invalid limit parameter'}, status=status.HTTP_400_BAD_REQUEST)
 
     recent_activities = Activity.objects.order_by('-created_at')[:limit]
-    from activities.serializers import ActivityWithContactSerializer  # Import here to avoid circular dependency
+
+    from activities.serializers import ActivityWithContactSerializer  
     serializer = ActivityWithContactSerializer(recent_activities, many=True)
     return Response(serializer.data)

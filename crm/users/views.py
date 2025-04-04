@@ -12,6 +12,7 @@ from .serializers import (
 from .models import UserProfile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from .permissions import IsOwnerOrReadOnly
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
@@ -34,7 +35,7 @@ class UserLoginView(generics.GenericAPIView):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET', 'PUT', 'PATCH'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsOwnerOrReadOnly])
 def user_profile_view(request):
     try:
         profile = UserProfile.objects.get(user=request.user)

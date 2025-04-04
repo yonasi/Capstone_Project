@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Activity
-from contacts.serializers import ContactSerializer  # Import if you want nested contact info
+from contacts.serializers import ContactSerializer  
 from django.contrib.auth import get_user_model
 from contacts.models import Contact
 
