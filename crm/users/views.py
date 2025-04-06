@@ -45,8 +45,8 @@ def user_profile_view(request):
     if request.method == 'GET':
         serializer = UserProfileSerializer(profile)
         return Response(serializer.data)
-    elif request.method == 'PUT' or request.method == 'PATCH':
-        serializer = UserProfileUpdateSerializer(profile, data=request.data, partial=True)
+    elif request.method in [ 'PUT', 'PATCH']:
+        serializer = UserProfileUpdateSerializer(profile, data=request.data, partial= True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

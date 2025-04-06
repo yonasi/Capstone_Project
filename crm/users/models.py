@@ -12,6 +12,10 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+#added on april 6
+# to add is manager field inside User model for more 
+User.add_to_class('is_manager', models.BooleanField(default=False))
 
 
 #i am using signals to automatically create and update a userprofile whenever a user instance is created

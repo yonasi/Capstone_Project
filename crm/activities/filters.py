@@ -13,4 +13,4 @@ class ActivityFilter(django_filters.FilterSet):
 
     class meta:
         model = Activity
-        fields = ['activity_type', 'subject', 'contact', 'created_by', 'due_date__gte', 'due_date__lte', 'completed']
+        fields = ['priority', 'activity_type', 'subject', 'contact', 'assigned_to', 'created_by', 'due_date__gte', 'due_date__lte', 'completed']

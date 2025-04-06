@@ -10,18 +10,22 @@ class ActivitySerializer(serializers.ModelSerializer):
     created_by = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
     )
+    assigned_to = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True) # Added on april 6
 
     class Meta:
         model = Activity
         fields = '__all__'
         read_only_fields = ['created_at', 'updated_at']
 
-# Optional: Serializer to show nested contact details in activity list/retrieve
+# this Serializer shows nested contact details in activity view i will use it optionaly
 class ActivityWithContactSerializer(serializers.ModelSerializer):
     contact = ContactSerializer(read_only=True)
     created_by = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
     )
+    assigned_to = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True) # Added on april 6
 
     class Meta:
         model = Activity

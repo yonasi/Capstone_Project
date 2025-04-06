@@ -8,8 +8,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
         read_only_fields = ['id']
 
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # Display basic user info
+    user = UserSerializer(read_only=True) # Display basic user info
+   
     class Meta:
         model = UserProfile
         fields = ['user', 'job_title', 'location', 'profile_pic']
@@ -47,6 +50,23 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
     class Meta:
         model = UserProfile
-        fields = ['job_title', 'location', 'profile_pic']
+        fields = ['user','job_title', 'location', 'profile_pic']
+
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', {})
+        user = instance.user
+
+        for attr, value in user_data.items():
+            setattr(user, attr, value)
+        user.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+       
+        return instance
