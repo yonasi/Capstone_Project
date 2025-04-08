@@ -1,16 +1,19 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
     UserProfileSerializer,
-    UserProfileUpdateSerializer
+    UserProfileUpdateSerializer,
+    PasswordChangeSerializer
 )
 from .models import UserProfile
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, permission_classes
 from .permissions import IsOwnerOrReadOnly
 
@@ -51,3 +54,32 @@ def user_profile_view(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    #updated on april 8
+class PasswordChangeView(generics.UpdateAPIView):
+    serializer_class = PasswordChangeSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['put']
+
+    def get_object(self):  # overriding the default method to use the currently authenticated user
+        return self.request.user
+    
+    def update(self, request, instance, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.get_object()
+        serializer.update(user, serializer.validated_data)
+        return Response ({'message': 'Password updateed successfully.'}, status=status.HTTP_200_OK)
+
+
+class LogoutView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            request.user.auth_token.delete()
+            return Response({"message": "Successfully logged out."}, status=status.HTTP_200_OK)
+        except AttributeError:
+            return Response({"error": "User has no active token."}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,4 @@
-from rest_framework import serializers, viewsets, generics
+from rest_framework import serializers, viewsets, generics, status
 from .models import Activity
 from contacts.models import Contact
 from .serializers import ActivitySerializer, ActivityWithContactSerializer
@@ -7,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ActivityFilter
 from .permissions import IsContactRelatedOrReadOnly, IsContactRelatedOrReadOnly, CanAssignActivity, CanExtendDueDate
 from rest_framework import filters
+from rest_framework.response import Response
 
 
 class ActivityViewSet(viewsets.ModelViewSet):
@@ -19,6 +20,18 @@ class ActivityViewSet(viewsets.ModelViewSet):
     ordering_fields = ['assigned_to__username', 'activity_type', 'subject', 'due_date','priority', 'completed', 'created_at', 'updated_at',
 'contact__first_name', 'contact__last_name', 'created_by__username']
     
+
+    def get_queryset(self):
+        return Activity.objects.filter(is_deleted=False)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete() 
+
 class ContactActivitiesListView(generics.ListCreateAPIView):
     serializer_class = ActivityWithContactSerializer
     permission_classes = [IsAuthenticated]
@@ -26,9 +39,10 @@ class ContactActivitiesListView(generics.ListCreateAPIView):
     filterset_fields = ['activity_type', 'subject']
     ordering_fields = ['activity_type', 'due_date', 'completed', 'created_at'] 
 
+
     def get_queryset(self):
         contact_id = self.kwargs.get('id')
-        return Activity.objects.filter(contact_id=contact_id)
+        return Activity.objects.filter(contact_id=contact_id, is_deleted=False)
 
     def perform_create(self, serializer): #overriding CreateAPIView's method
         contact_id = self.kwargs.get('id')
@@ -48,4 +62,4 @@ class TaskListView(generics.ListAPIView):
     
 
     def get_queryset(self):
-        return Activity.objects.filter(activity_type='task')
+        return Activity.objects.filter(activity_type='task', is_deleted=False)

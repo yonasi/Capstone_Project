@@ -30,6 +30,11 @@ class Contact(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     assigned_to = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_contacts')
     notes = models.TextField(null=True, blank=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    def delete(self, *args, **kwargs):  #overriding the defalult delete method to just set is_deleted field to True
+        self.is_valid = True
+        self.save
