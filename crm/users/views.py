@@ -65,7 +65,7 @@ class PasswordChangeView(generics.UpdateAPIView):
     def get_object(self):  # overriding the default method to use the currently authenticated user
         return self.request.user
     
-    def update(self, request, instance, *args, **kwargs):
+    def update(self,request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = self.get_object()

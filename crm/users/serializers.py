@@ -79,12 +79,18 @@ class PasswordChangeSerializer(serializers.Serializer):
     new_password2 = serializers.CharField(write_only=True, required=True, style={'input_type':'password'})
     
     def validate(self, data):
-        if data['old_password']!= data['new_password1']:
+        request = self.context.get('request')
+        user = request.user if request else None
+
+        if not user.check_password(data['old_password']):
+            raise serializers.ValidationError({'old_password': 'Old password is incorrect'})
+
+        elif data['old_password']== data['new_password1']:
             raise serializers.ValidationError({'new_password1':'new password must be different from old password'})
         elif data['new_password1']!= data['new_password2']:
             raise serializers.ValidationError({'new_password2':'passwords must match'})
         return data
     def update(self, instance, validated_data):
-        instance.set_password(validated_data['password1'])
+        instance.set_password(validated_data['new_password1'])
         instance.save()
         return instance
