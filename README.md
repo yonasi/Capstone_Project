@@ -46,7 +46,7 @@ Here is  a breakdown of each API endpoint, along with example data and descripti
 # Authentication:
 
 ## POST /users/login/
-** Description: Logs in a user and returns an authentication token.**
+**Description: Logs in a user and returns an authentication token.**
 ```
 Body (raw - JSON):
 JSON
@@ -59,20 +59,23 @@ JSON
 Expected Response: 200 OK with a JSON body containing the key (the authentication token).
 
 
-POST /users/logout/
-Description: Logs out the currently authenticated user by invalidating their token.
+## POST /users/logout/
+**Description: Logs out the currently authenticated user by invalidating their token.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Expected Response: 200 OK with a JSON body: 
 JSON
 {
     "message": "Successfully logged out."
 }
+```
 
+# User Management:
 
-User Management:
+## POST /users/register/
+**Description: Registers a new user.**
 
-POST /users/register/
-Description: Registers a new user.
+```
 Body (raw - JSON):
 JSON
 {
@@ -83,15 +86,19 @@ JSON
      "password": " ",
       "password2": " "
 }
+```
 Expected Response: 201 Created with user details.
 
-GET /users/profile/
-Description: Retrieves the profile of the currently authenticated user.
+## GET /users/profile/
+**Description: Retrieves the profile of the currently authenticated user.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Expected Response: 200 OK with user profile information (job_title, location, profile_pic).
+```
 
-PUT /users/profile/ or PATCH /users/profile/
-Description: Updates the profile of the currently authenticated user.
+## PUT /users/profile/ or PATCH /users/profile/
+**Description: Updates the profile of the currently authenticated user.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN 
 Content-Type: application/json.
 Body (raw - JSON):
@@ -101,10 +108,12 @@ JSON
     "job_title": " ",
     "location": " "
 }
+```
 Expected Response: 200 OK with the updated user profile information.
 
-PUT /users/password/change/
-Description: Changes the password of the currently authenticated user.
+## PUT /users/password/change/
+**Description: Changes the password of the currently authenticated user.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN  
 Content-Type: application/json.
 Body (raw - JSON):
@@ -115,18 +124,21 @@ JSON
     "new_password1": " ",
     "new_password2": " "
 }
-Expected Response: 200 OK with a JSON body:
+
+*Expected Response: 200 OK with a JSON body:*
 JSON
 
 {
     "message": "Password updated successfully."
 }
 
+```
 
-Contacts:
+# Contacts:
 
-GET /contacts/
-Description: Lists all non-deleted contacts (with optional query parameters for filtering, pagination, etc.).
+## GET /contacts/
+**Description: Lists all non-deleted contacts (with optional query parameters for filtering, pagination, etc.).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Optional Query Parameters:
 category: lead, prospect, customer
@@ -136,10 +148,12 @@ page: (page number)
 page_size: (number of contacts per page)
 ordering: first_name, -created_at, etc.
 search: (search term)
+```
 Expected Response: 200 OK with a paginated list of contact objects.
 
-POST /contacts/
-Description: Creates a new contact.
+## POST /contacts/
+**Description: Creates a new contact.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN 
 Content-Type: application/json.
 Body (raw - JSON):
@@ -154,18 +168,22 @@ JSON
     "category": " ",
     "notes": " "
 }
+```
 Expected Response: 201 Created with the newly created contact object.
 
 
-GET /contacts/{id}/
-Description: Retrieves a specific contact by ID.
+## GET /contacts/{id}/
+**Description: Retrieves a specific contact by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Path Parameter: Replace {id} with the ID of the contact.
+```
 Expected Response: 200 OK with the contact object.
 
 
-PUT /contacts/{id}/ or PATCH /contacts/{id}/
-Description: Updates a specific contact by ID.
+## PUT /contacts/{id}/ or PATCH /contacts/{id}/
+**Description: Updates a specific contact by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN and 
 Content-Type: application/json
 Path Parameter: Replace {id} with the ID of the contact.
@@ -176,26 +194,32 @@ JSON
     "email": " ",
     "category": " "
 }
+```
 Expected Response: 200 OK with the updated contact object.
 
-DELETE /contacts/{id}/
-Description: Soft deletes a specific contact by ID.
+# DELETE /contacts/{id}/
+**Description: Soft deletes a specific contact by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Path Parameter: Replace {id} with the ID of the contact.
+```
 Expected Response: 204 No Content.
 
 
-Companies:
+# Companies:
 
-GET /companies/
-Description: Lists all companies (with optional query parameters).
+## GET /companies/
+**Description: Lists all companies (with optional query parameters).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Optional Query Parameters: name, city, country, page, page_size, ordering, search.
+```
 Expected Response: 200 OK with a paginated list of company objects.
 
 
-POST /companies/
-Description: Creates a new company (requires staff user).
+## POST /companies/
+**Description: Creates a new company (requires staff user).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN (for a staff user) and Content-Type: application/json.
 Body (raw - JSON):
 JSON
@@ -207,21 +231,22 @@ JSON
     "country": " “
     "website": " "
 }
+```
 Expected Response: 201 Created with the newly created company object.
 
 
-GET /companies/{id}/
-Description: Retrieves a specific company by ID.
+## GET /companies/{id}/
+**Description: Retrieves a specific company by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Path Parameter: Replace {id} with the ID of the company.
+```
 Expected Response: 200 OK with the company object.
 
 
-
-
-
-PUT /companies/{id}/ or PATCH /companies/{id}/
-Description: Updates a specific company by ID (requires staff user).
+## PUT /companies/{id}/ or PATCH /companies/{id}/
+**Description: Updates a specific company by ID (requires staff user).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN (for a staff user) and Content-Type: application/json.
 Path Parameter: Replace {id} with the ID of the company.
 Body (raw - JSON):
@@ -230,27 +255,33 @@ JSON
 {
     "website": ""
 }
+```
 Expected Response: 200 OK with the updated company object.
 
 
-DELETE /companies/{id}/
-Description: Hard deletes a specific company by ID (requires staff user).
-Headers: Include Authorization: Token YOUR_AUTH_TOKEN (for a staff user).
+## DELETE /companies/{id}/
+**Description: Hard deletes a specific company by ID (requires staff user).**
+
+```Headers: Include Authorization: Token YOUR_AUTH_TOKEN (for a staff user).
 Path Parameter: Replace {id} with the ID of the company.
+```
 Expected Response: 204 No Content.
 
 
-Activities
+# Activities
 
-GET /activities/
-Description: Lists all non-deleted activities (with optional query parameters).
+## GET /activities/
+**Description: Lists all non-deleted activities (with optional query parameters).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Optional Query Parameters: activity_type, subject, completed, priority, assigned_to, contact, due_date, page, limit, offset, ordering, search.
+```
 Expected Response: 200 OK with a paginated list of activity objects.
 
 
-POST /activities/
-Description: Creates a new activity.
+## POST /activities/
+**Description: Creates a new activity.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN 
 Content-Type: application/json.
 Body (raw - JSON):
@@ -263,18 +294,22 @@ JSON
     "details": " .",
     "due_date": " "
 }
+```
 Expected Response: 201 Created with the newly created activity object.
 
 
-GET /activities/{id}/
-Description: Retrieves a specific activity by ID.
+## GET /activities/{id}/
+**Description: Retrieves a specific activity by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Path Parameter: Replace {id} with the ID of the activity.
+```
 Expected Response: 200 OK with the activity object.
 
 
-PUT /activities/{id}/ or PATCH /activities/{id}/
-Description: Updates a specific activity by ID.
+## PUT /activities/{id}/ or PATCH /activities/{id}/
+**Description: Updates a specific activity by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN 
 Content-Type: application/json.
 Path Parameter: Replace {id} with the ID of the activity.
@@ -285,49 +320,56 @@ JSON
     "completed": ,
     "due_date": " "
 }
+```
 Expected Response: 200 OK with the updated activity object.
 
-
-
-DELETE /activities/{id}/
-Description: Soft deletes a specific activity by ID.
+## DELETE /activities/{id}/
+**Description: Soft deletes a specific activity by ID.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Path Parameter: Replace {id} with the ID of the activity.
+```
 Expected Response: 204 No Content.
 
 
-GET /contacts/{contact_id}/activities/
-Description: Lists activities associated with a specific contact.
+## GET /contacts/{contact_id}/activities/
+**Description: Lists activities associated with a specific contact.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Path Parameter: Replace {contact_id} with the ID of the contact.
 Optional Query Parameters: activity_type, subject, completed, ordering.
+```
 Expected Response: 200 OK with a list of activity objects.
 
 
-
-
-POST /contacts/{contact_id}/activities/
-Description: Creates a new activity associated with a specific contact.
+## POST /contacts/{contact_id}/activities/
+**Description: Creates a new activity associated with a specific contact.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN and Content-Type: application/json.
 Path Parameter: Replace {contact_id} with the ID of the contact.
 Body (raw - JSON): (Same as POST /activities/ but contact field in body is not needed as it's inferred from the URL).
+```
 Expected Response: 201 Created with the newly created activity object.
-Tasks:
 
-GET /tasks/
-Description: Lists all non-deleted activities with activity_type as 'task'.
+
+# Tasks:
+
+## GET /tasks/
+**Description: Lists all non-deleted activities with activity_type as 'task'.**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Optional Query Parameters: Same as GET /activities/.
+```
 Expected Response: 200 OK with a paginated list of task objects.
-Reports:
 
 
+# Reports:
 
-Reports
-GET /reports/sales/
-Description: Retrieves the sales funnel report (counts of contacts by category).
+## GET /reports/sales/
+**Description: Retrieves the sales funnel report (counts of contacts by category).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
-Expected Response: 200 OK with a JSON object like:
+*Expected Response: 200 OK with a JSON object like:*
 JSON
 
 {
@@ -335,32 +377,34 @@ JSON
     "prospect": 5,
     "customer": 20
 }
+```
 
-
-GET /reports/contacts_created_by_month/
-Description: Retrieves the report of contacts created per month (optional year query parameter).
+## GET /reports/contacts_created_by_month/
+**Description: Retrieves the report of contacts created per month (optional year query parameter).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
 Optional Query Parameter: year (e.g., year=2025).
-Expected Response: 200 OK with a JSON object like:
+*Expected Response: 200 OK with a JSON object like:*
 JSON
 
 {
     "2025-03": 5,
     "2025-04": 12
 }
-
-
-GET /reports/recent_activities/
-Description: Retrieves the most recent activities (optional limit query parameter).
+```
+# GET /reports/recent_activities/
+**Description: Retrieves the most recent activities (optional limit query parameter).**
+```
 Headers: Include Authorization: Token YOUR_AUTH_TOKEN.
-Optional Query Parameter: limit (e.g., ?limit=5).
+Optional Query Parameter: limit (e.g., limit=5).
+```
 Expected Response: 200 OK with a list of recent activity objects.
 
 
-API Root:
+# API Root:
 
-GET /
-Description: Lists the available API endpoints.
+``` GET / ```
+**Description: Lists the available API endpoints.**
 Expected Response: 200 OK with a JSON object containing the URLs of the main endpoints.
 
-Remember to start your Django development server (python manage.py runserver) when testing locally. 
+**Remember to start your Django development server (python manage.py runserver) when testing locally.**
