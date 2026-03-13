@@ -1,40 +1,40 @@
-Customer Relationship Manager API Description
+## Customer Relationship Manager API Description
 
 This API provides a comprehensive set of endpoints for managing core aspects of a Customer Relationship Management (CRM) system. It allows you to interact with and manipulate data related to contacts, companies, activities, user accounts, and generate insightful reports.   
 
-Core Functionality:
+# Core Functionality:
 
-Contact Management: Create, retrieve, update, and manage information about individual contacts, including their personal details, company affiliation, category (lead, prospect, customer), and notes. Assign contacts to specific users for follow-up.
+**Contact Management:** Create, retrieve, update, and manage information about individual contacts, including their personal details, company affiliation, category (lead, prospect, customer), and notes. Assign contacts to specific users for follow-up.
 
-Company Management: Create, retrieve, update, and manage information about organizations, including their name, address, website, and other relevant details.
+**Company Management:** Create, retrieve, update, and manage information about organizations, including their name, address, website, and other relevant details.
 
-Activity Management: Track various interactions and tasks related to contacts, such as calls, emails, meetings, tasks, and general notes. Schedule due dates for tasks and activities, mark them as complete, and assign them to users.   
+**Activity Management:** Track various interactions and tasks related to contacts, such as calls, emails, meetings, tasks, and general notes. Schedule due dates for tasks and activities, mark them as complete, and assign them to users.   
 
-User Management: Handle user accounts, including registration, login (generating authentication tokens), profile management (retrieving and updating user details), password changes, and logout (invalidating authentication tokens).
+**User Management:** Handle user accounts, including registration, login (generating authentication tokens), profile management (retrieving and updating user details), password changes, and logout (invalidating authentication tokens).
 
-Reporting: Generate valuable insights through various reports, including a sales funnel breakdown (contacts by category), the number of contacts created per month, and a list of recent activities.
+**Reporting:** Generate valuable insights through various reports, including a sales funnel breakdown (contacts by category), the number of contacts created per month, and a list of recent activities.
 
-Task Reminders: The system automatically sends email notifications for upcoming and overdue tasks to the assigned users, ensuring timely follow-up.
-
-
+**Task Reminders:** The system automatically sends email notifications for upcoming and overdue tasks to the assigned users, ensuring timely follow-up.
 
 
 
-Key Features:
 
-RESTful Design: The API adheres to RESTful principles, utilizing standard HTTP methods (GET, POST, PUT, PATCH, DELETE) for performing actions on resources. 
 
-JSON Data Format: All requests and responses utilize the JSON (JavaScript Object Notation) data format for easy parsing and interoperability.
+# Key Features:
 
-Token-Based Authentication: Secure access to protected endpoints is managed through token-based authentication. Users obtain a unique token upon successful login, which must be included in the Authorization header of subsequent requests.
+**RESTful Design:** The API adheres to RESTful principles, utilizing standard HTTP methods (GET, POST, PUT, PATCH, DELETE) for performing actions on resources. 
 
-Granular Permissions: Access control is implemented through refined permission classes, ensuring that users can only interact with data they are authorized to manage. This includes allowing assigned users and managers to modify contacts and activities, and managers having extended privileges like reassigning users and extending due dates.
+**JSON Data Format:** All requests and responses utilize the JSON (JavaScript Object Notation) data format for easy parsing and interoperability.
+
+**Token-Based Authentication:** Secure access to protected endpoints is managed through token-based authentication. Users obtain a unique token upon successful login, which must be included in the Authorization header of subsequent requests.
+
+**Granular Permissions:** Access control is implemented through refined permission classes, ensuring that users can only interact with data they are authorized to manage. This includes allowing assigned users and managers to modify contacts and activities, and managers having extended privileges like reassigning users and extending due dates.
 
 Filtering, Pagination, Ordering, and Searching: List endpoints support various query parameters to filter, paginate, order, and search through collections of resources, allowing for efficient data retrieval.
 
-Soft Deletes: For contacts and activities, a soft delete mechanism is implemented. Instead of permanent deletion, records are marked as is_deleted, preserving data integrity and potential for recovery. Companies are currently hard-deleted.
+**Soft Deletes:** For contacts and activities, a soft delete mechanism is implemented. Instead of permanent deletion, records are marked as is_deleted, preserving data integrity and potential for recovery. Companies are currently hard-deleted.
 
-API Root: A dedicated /api/ endpoint provides a discoverable entry point, listing the available API endpoints.
+**API Root:** A dedicated /api/ endpoint provides a discoverable entry point, listing the available API endpoints.
 
 
 
@@ -43,10 +43,11 @@ API Root: A dedicated /api/ endpoint provides a discoverable entry point, listin
 
 Here is  a breakdown of each API endpoint, along with example data and descriptions you can use to test them. Replace placeholders and example data with actual values.
 
-Authentication:
+# Authentication:
 
-POST /users/login/
-Description: Logs in a user and returns an authentication token.
+## POST /users/login/
+** Description: Logs in a user and returns an authentication token.**
+```
 Body (raw - JSON):
 JSON
 
@@ -54,6 +55,7 @@ JSON
    "username": "",
    "password": ""
 }
+```
 Expected Response: 200 OK with a JSON body containing the key (the authentication token).
 
 
